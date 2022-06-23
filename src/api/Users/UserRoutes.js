@@ -125,7 +125,6 @@ router.get("/sendReset/:email", async (req, res) => {
 
 router.post("/sendReset/:token", async (req, res) => {
   const { password, confirmpassword, email } = req.body;
-  //TODO: check if token expired
 
   const token = req.params.token;
   const decoded = jwt.decode(token);
@@ -142,7 +141,6 @@ router.post("/sendReset/:token", async (req, res) => {
   try {
     const salt = await bcrypt.genSalt(10);
     const user = await User.findOne({ email: decoded.email });
-    if
     await user.update({ password: await bcrypt.hash(password, salt) });
   } catch (error) {
     res.status(405).send({ success: false, message: "Unauthorized" });
