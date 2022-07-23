@@ -1,5 +1,8 @@
 const { Sequelize } = require("sequelize");
 
+/**
+ * orm connection to database
+ */
 const sequelize = new Sequelize(
   process.env.DB_name,
   process.env.DB_user,
@@ -15,6 +18,7 @@ const sequelize = new Sequelize(
   }
 );
 sequelize.sync();
+// sequelize.sync({ force: true });
 (async () => {
   try {
     await sequelize.authenticate();

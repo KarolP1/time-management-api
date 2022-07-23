@@ -31,6 +31,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
 
+/**
+ * Main api route
+ * app.use("/api/v1", api);
+ *
+ */
 app.use("/api/v1", api);
 app.use(middlewares.notFound);
 app.use(middlewares.errorHandler);

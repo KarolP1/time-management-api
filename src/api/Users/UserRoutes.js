@@ -11,11 +11,18 @@ const { InfoAboutMe } = require("./functions");
 const axios = require("axios");
 const { resetTokenJWT } = require("../../ustils/jwtAccessToken");
 dotenv.config();
-
+/**
+ * test route to figure out if is it working
+ */
 router.get("/", function (req, res) {
   res.send("respond with a resource");
 });
 
+/**
+ * /register
+ * method:"post"
+ * @param first_name string
+ */
 router.post("/register", async (req, res) => {
   try {
     const { first_name, last_name, email, password } = req.body;
@@ -47,13 +54,16 @@ router.post("/register", async (req, res) => {
       password: await bcrypt.hash(password, salt),
     });
 
-    await axios.post("http://localhost:8081/api/v1/mailing/sendWelcomeEmial", {
-      email: email,
-      title: `hello ${first_name}`,
-      description: "better run away",
-      messageText: "hello my darling",
-      vreify: "http://localhost:8000/api/v1/user/authenticated",
-    });
+    await axios.post(
+      "http://karolcodetest.networkmanager.pl/java/services/mailing/sendWelcomeEmial",
+      {
+        email: email,
+        title: `hello ${first_name}`,
+        description: "better run away",
+        messageText: "hello my darling",
+        vreify: "http://localhost:8000/api/v1/user/authenticated",
+      }
+    );
     res.send({ created_user });
   } catch (error) {
     console.log(error);
@@ -113,14 +123,20 @@ router.get("/sendReset/:email", async (req, res) => {
   console.log("");
   console.log(`localhost:8000/api/v1/user/sendReset/${token}`);
 
-  await axios.post("http://localhost:8081/api/v1/mailing/sendResetEmial", {
-    email: email,
-    title: `hello ${email}`,
-    description: "better run away",
-    messageText: "hello my darling",
-    verifyLink: `localhost:8000/api/v1/user/sendReset/${token}`,
+  await axios.post(
+    "http://karolcodetest.networkmanager.pl/java/services/mailing/sendResetEmial",
+    {
+      email: email,
+      title: `hello ${email}`,
+      description: "better run away",
+      messageText: "hello my darling",
+      verifyLink: `localhost:8000/api/v1/user/sendReset/${token}`,
+    }
+  );
+  res.status(200).send({
+    success: true,
+    data: `localhost:8000/api/v1/user/sendReset/${token}`,
   });
-  res.status(200).send({ success: true });
 });
 
 router.post("/sendReset/:token", async (req, res) => {
